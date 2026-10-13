@@ -1,0 +1,8 @@
+node_modules/
+.aws-sam/
+.env
+env.json
+
+src/data*
+scripts/output/
+.cache*

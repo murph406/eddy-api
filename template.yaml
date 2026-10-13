@@ -1,0 +1,99 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Eddy Api Gateway
+
+Parameters:
+  Project:
+    Type: String
+  Stage:
+    Type: String
+    AllowedValues:
+      - develop
+      - stage
+      - main
+    Description: develop, stage or main
+  BasicAuthSecret:
+    Type: String
+  EncryptSecret:
+    Type: String
+  RecaptchaEnabled:
+    Type: String
+  RecaptchaSecret:
+    Type: String
+
+Globals:
+  Function:
+    CodeUri: ./
+    Runtime: nodejs24.x
+    Timeout: 900
+    MemorySize: 256
+    Environment:
+      Variables:
+        STAGE: !Ref Stage
+        PROJECT: !Ref Project
+        BASIC_AUTH_SECRET: !Ref BasicAuthSecret
+        ENCRYPT_SECRET: !Ref EncryptSecret
+        RECAPTCHA_ENABLED: !Ref RecaptchaEnabled
+        RECAPTCHA_SECRET: !Ref RecaptchaSecret
+
+Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${Project}-${Stage}-api-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      # Policies:
+      #   - PolicyName: S3DataReadPolicy
+      #     PolicyDocument:
+      #       Version: '2012-10-17'
+      #       Statement:
+      #         - Effect: Allow
+      #           Action:
+      #             - s3:GetObject
+      #             - s3:PutObject
+      #             - s3:ListBucket
+      #           Resource: 
+      #             - !Sub 'arn:aws:s3:::${Project}-${Stage}-data/*'
+      #             - !Sub 'arn:aws:s3:::${Project}-${Stage}-data' 
+
+  HealthFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Project}-${Stage}-HealthFunction'
+      RetentionInDays: 14
+
+
+  HoopfestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub '${Project}-${Stage}-api'
+      StageName: !Ref Stage
+  
+  HealthFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: es2020
+        EntryPoints:
+          - src/controllers/health/index.js
+    Properties:
+      Role: !GetAtt LambdaExecutionRole.Arn
+      FunctionName: !Sub '${Project}-${Stage}-HealthFunction'
+      Handler: controllers/health/index.handler
+      Events:
+        api:
+          Type: Api
+          Properties:
+            Path: /api/v1
+            Method: GET
+            RestApiId: !Ref HoopfestApi
