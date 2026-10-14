@@ -44,13 +44,10 @@ jobs:
           ./parameter-overrides/print.sh
         env:
           Project: ${{ vars.PROJECT }}
-          DynamoApplicationTable: ${{ vars.DYNAMO_APPLICATION_TABLE }}
           EncryptSecret: ${{ secrets.ENCRYPT_SECRET }}
           BasicAuthSecret: ${{ secrets.BASIC_AUTH_SECRET }}
           RecaptchaEnabled: ${{ vars.RECAPTCHA_ENABLED }}
           RecaptchaSecret: ${{ secrets.RECAPTCHA_SECRET }}
-          TmsBaseUrl: ${{ vars.TMS_BASE_URL }}
-          BracketSyncScheduleState: ${{ vars.BRACKET_SYNC_SCHEDULE_STATE }}
           
       - name: SAM Build
         run: sam build
@@ -64,25 +61,11 @@ jobs:
           || [ $? -eq 1 ] && echo "No changes to deploy, continuing..."
         env:
           Project: ${{ vars.PROJECT }}
-          DynamoApplicationTable: ${{ vars.DYNAMO_APPLICATION_TABLE }}
           EncryptSecret: ${{ secrets.ENCRYPT_SECRET }}
           BasicAuthSecret: ${{ secrets.BASIC_AUTH_SECRET }}
           RecaptchaEnabled: ${{ vars.RECAPTCHA_ENABLED }}
           RecaptchaSecret: ${{ secrets.RECAPTCHA_SECRET }}
-          TmsBaseUrl: ${{ vars.TMS_BASE_URL }}
-          BracketSyncScheduleState: ${{ vars.BRACKET_SYNC_SCHEDULE_STATE }}
       
-      - name: Init data
-        run: |
-          node scripts/init-data.js
-        env:
-          STAGE: ${{ github.ref_name }}
-          PROJECT: ${{ vars.PROJECT }}
-          AWS_REGION: ${{ vars.AWS_REGION }}
-
-      - name: Deploy lookups to S3
-        run: |
-          aws s3 sync ./src/lookups s3://$Project-$Stage-lookups --delete
       - name: Invalidate Cloudfront
         run: |
           aws cloudfront create-invalidation --distribution-id $DistributionId --paths "/*"
