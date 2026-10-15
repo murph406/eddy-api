@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "sam build && sam local start-api -p 8000 --host 0.0.0.0",
-    "dev": "nodemon --watch  src --ext js --ignore src/data --exec 'node scripts/env-to-json.js && sam build && sam local start-api -p 8000 --host 0.0.0.0'",
+    "dev": "nodemon --watch  src --ext js --exec 'node scripts/env-to-json.js && sam build && sam local start-api -p 8000 --host 0.0.0.0'",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "format": "prettier --write src/"

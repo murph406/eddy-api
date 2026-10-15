@@ -1,0 +1,29 @@
+version = 0.1
+
+[default.build.parameters]
+cached = true
+parallel = true
+
+[default.local_start_api.parameters]
+port = 8000
+
+[develop.deploy.parameters]
+stack_name = "eddy-develop-api"
+s3_bucket = "eddy-sam-cli"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM CAPABILITY_NAMED_IAM"
+
+[stage.deploy.parameters]
+stack_name = "eddy-stage-api"
+s3_bucket = "eddy-sam-cli"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM CAPABILITY_NAMED_IAM"
+
+[main.deploy.parameters]
+stack_name = "eddy-main-api"
+s3_bucket = "eddy-sam-cli"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM CAPABILITY_NAMED_IAM"
