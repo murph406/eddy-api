@@ -1,7 +1,8 @@
 
 export const convertTo24hr = (timeString: string) => {
     const [time, modifier] = timeString.split(' ')
-    let [hours, minutes] = time.split(':')
+    const minutes = time.split(':')[1]
+    let hours = time.split(':')[0]
     
     if (hours === '12') hours = '00'
     if (modifier === 'PM') hours = String(parseInt(hours, 10) + 12)
@@ -9,4 +10,4 @@ export const convertTo24hr = (timeString: string) => {
     
 }
 
-export const isValidDate = (date: Date) => !isNaN(date.getTime());
+export const isValidDate = (date: Date) => !isNaN(date.getTime())

@@ -2,8 +2,8 @@ import { use } from '../../middleware'
 import { ok } from '../../utils/response'
 
 const handler = async () => {
-    const message = '🎣🎣🎣🎣🎣🎣'
-    // const message = '🔥🔥🔥🔥🔥🔥'
+    // const message = '🎣🎣🎣🎣🎣🎣'
+    const message = '🔥🔥🔥🔥🔥🔥'
 
     return ok({ message })
 }

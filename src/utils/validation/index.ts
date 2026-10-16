@@ -4,7 +4,7 @@ import errorCodes from './error-codes.json'
 import DOMAIN_BAN_LIST from '../../config/banned/domain.json'
 
 declare module 'yup' {
-    interface StringSchema<TType, TContext, TDefault, TFlags> {
+    interface StringSchema {
         emailDomain(): this
     }
 }
