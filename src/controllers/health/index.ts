@@ -1,5 +1,5 @@
-const { use } = require('../../middleware')
-const { ok } = require('../../utils/response')
+import { use } from '../../middleware'
+import { ok } from '../../utils/response'
 
 const handler = async () => {
     const message = '🎣🎣🎣🎣🎣🎣'

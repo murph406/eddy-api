@@ -34,6 +34,11 @@ jobs:
         run: |
           npm install
           npm install -g esbuild
+      
+      - name: Type check and lint
+        run: |
+          npx tsc --noEmit
+          npm run lint
 
       - name: Set Overrides
         shell: bash
@@ -57,8 +62,7 @@ jobs:
           sam deploy \
             --config-env ${{ github.ref_name }} \
             --parameter-overrides $(./parameter-overrides/print.sh) \
-            --debug \
-          || [ $? -eq 1 ] && echo "No changes to deploy, continuing..."
+            --no-fail-on-empty-changeset
         env:
           Project: ${{ vars.PROJECT }}
           EncryptSecret: ${{ secrets.ENCRYPT_SECRET }}

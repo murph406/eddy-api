@@ -1,10 +1,18 @@
-const yup = require('yup')
+import * as yup from 'yup'
 
-const errorCodes = require('./error-codes.json')
-const DOMAIN_BAN_LIST = require('../../config/banned/domain.json')
+import errorCodes from './error-codes.json'
+import DOMAIN_BAN_LIST from '../../config/banned/domain.json'
+
+declare module 'yup' {
+    interface StringSchema<TType, TContext, TDefault, TFlags> {
+        emailDomain(): this
+    }
+}
 
 yup.addMethod(yup.string, 'emailDomain', function () {
     return this.test('emailDomain', function (email) {
+        if (!email) return true
+
         const { path, createError } = this
         const atIndex = email.indexOf('@')
         const emailDomain = email.slice(atIndex + 1, email.length)
@@ -23,31 +31,37 @@ yup.addMethod(yup.string, 'emailDomain', function () {
 })
 
 const string = yup
-    .string(errorCodes.RequiredInput.frontendCode)
+    .string()
+    .typeError(errorCodes.RequiredInput.frontendCode)
 
 const requiredString = yup
-    .string(errorCodes.InvalidInput.frontendCode)
+    .string()
+    .typeError(errorCodes.InvalidInput.frontendCode)
     .required(errorCodes.RequiredInput.frontendCode)
 
 const boolean = yup
-    .boolean(errorCodes.RequiredInput.frontendCode)
+    .boolean()
+    .typeError(errorCodes.RequiredInput.frontendCode)
+
 const requiredBoolean = yup
-    .boolean(errorCodes.RequiredInput.frontendCode)
+    .boolean()
+    .typeError(errorCodes.RequiredInput.frontendCode)
     .required(errorCodes.RequiredInput.frontendCode)
 
 const requiredBooleanTrue = yup
-    .boolean(errorCodes.RequiredInput.frontendCode)
+    .boolean()
+    .typeError(errorCodes.RequiredInput.frontendCode)
     .oneOf([true])
     .required(errorCodes.RequiredInput.frontendCode)
 
-const types = {
+export const types = {
     string,
     requiredString,
     boolean,
     requiredBooleanTrue
 }
 
-const attributes = {
+export const attributes = {
     firstName: string,
     lastName: string,
     email: yup.string().emailDomain(),
@@ -57,10 +71,4 @@ const attributes = {
     message: requiredString
 }
 
-const defineSchema = yup.object
-
-module.exports = {
-    defineSchema,
-    attributes,
-    types
-}
+export const defineSchema = yup.object

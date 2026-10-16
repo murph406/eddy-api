@@ -72,7 +72,7 @@ Resources:
         Minify: false
         Target: es2020
         EntryPoints:
-          - src/controllers/health/index.js
+          - src/controllers/health/index.ts
     Properties:
       Role: !GetAtt LambdaExecutionRole.Arn
       FunctionName: !Sub '${Project}-${Stage}-HealthFunction'
