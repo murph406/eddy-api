@@ -50,19 +50,6 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      # Policies:
-      #   - PolicyName: S3DataReadPolicy
-      #     PolicyDocument:
-      #       Version: '2012-10-17'
-      #       Statement:
-      #         - Effect: Allow
-      #           Action:
-      #             - s3:GetObject
-      #             - s3:PutObject
-      #             - s3:ListBucket
-      #           Resource: 
-      #             - !Sub 'arn:aws:s3:::${Project}-${Stage}-data/*'
-      #             - !Sub 'arn:aws:s3:::${Project}-${Stage}-data' 
 
   HealthFunctionLogGroup:
     Type: AWS::Logs::LogGroup
@@ -71,7 +58,7 @@ Resources:
       RetentionInDays: 14
 
 
-  HoopfestApi:
+  EddyApi:
     Type: AWS::Serverless::Api
     Properties:
       Name: !Sub '${Project}-${Stage}-api'
@@ -96,4 +83,4 @@ Resources:
           Properties:
             Path: /api/v1
             Method: GET
-            RestApiId: !Ref HoopfestApi
+            RestApiId: !Ref EddyApi
