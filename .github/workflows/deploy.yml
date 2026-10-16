@@ -71,6 +71,12 @@ jobs:
           BasicAuthSecret: ${{ secrets.BASIC_AUTH_SECRET }}
           RecaptchaEnabled: ${{ vars.RECAPTCHA_ENABLED }}
           RecaptchaSecret: ${{ secrets.RECAPTCHA_SECRET }}
+
+      - name: Build docs
+        run: npm run docs:build
+
+      - name: Deploy docs
+        run: aws s3 sync docs/dist "s3://${Project}-${Stage}" --delete
       
       - name: Invalidate Cloudfront
         run: |
