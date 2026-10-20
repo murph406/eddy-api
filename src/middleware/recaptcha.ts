@@ -9,8 +9,8 @@ interface RecaptchaBody {
 
 interface RecaptchaVerifyResponse {
     success: boolean
-    score?: number          // v3 only
-    action?: string         // v3 only
+    score?: number   
+    action?: string     
     challenge_ts?: string
     hostname?: string
     'error-codes'?: string[]
@@ -27,7 +27,7 @@ const recaptcha = async (
     const { data } = await axios.post<RecaptchaVerifyResponse>(
         'https://www.google.com/recaptcha/api/siteverify',
         new URLSearchParams({
-            secret: process.env.RecaptchaSecret ?? '',
+            secret: process.env.RECAPTCHA_SECRET ?? '',
             response: recaptchaToken
         })
     )

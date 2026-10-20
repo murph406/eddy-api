@@ -54,6 +54,7 @@ jobs:
           BasicAuthSecret: ${{ secrets.BASIC_AUTH_SECRET }}
           RecaptchaEnabled: ${{ vars.RECAPTCHA_ENABLED }}
           RecaptchaSecret: ${{ secrets.RECAPTCHA_SECRET }}
+          OllamaUrl: ${{ vars.OLLAMA_URL }}
           
       - name: SAM Build
         run: sam build
@@ -71,6 +72,7 @@ jobs:
           BasicAuthSecret: ${{ secrets.BASIC_AUTH_SECRET }}
           RecaptchaEnabled: ${{ vars.RECAPTCHA_ENABLED }}
           RecaptchaSecret: ${{ secrets.RECAPTCHA_SECRET }}
+          OllamaUrl: ${{ secrets.OLLAMA_URL }}
 
       - name: Build docs
         run: npm run docs:build
