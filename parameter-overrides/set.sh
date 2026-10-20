@@ -7,6 +7,7 @@ array=(
   BasicAuthSecret
   RecaptchaEnabled
   RecaptchaSecret
+  OllamaUrl
 )
 
 for i in "${array[@]}"

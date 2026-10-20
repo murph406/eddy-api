@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to SAM",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}/.aws-sam/build/${input:samFunction}",
+      "remoteRoot": "/var/task",
+      "sourceMaps": true,
+      "continueOnAttach": true,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "samFunction",
+      "type": "pickString",
+      "description": "Which function are you debugging?",
+      "options": ["ChatFunction", "HealthFunction"]
+    }
+  ], 
+  "outFiles": ["${workspaceFolder}/.aws-sam/build/**/*.js"],
+  "resolveSourceMapLocations": ["${workspaceFolder}/**", "${workspaceFolder}/.aws-sam/**", "!**/node_modules/**"],
+}

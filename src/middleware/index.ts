@@ -4,11 +4,18 @@ export type Middleware = (event: APIGatewayProxyEvent, context: Context) => Prom
 export type Handler = (event: APIGatewayProxyEvent, context: Context) => Promise<APIGatewayProxyResult>
 
 export const use = (...middlewares: Middleware[]) => (handler: Handler): Handler => async (event, context) => {
+
+  try {
+    event.body = event.body ? JSON.parse(event.body) : {}
+  } catch {
+    event.body = null
+  }
+
   for (const middleware of middlewares) {
     const result = await middleware(event, context)
     if (result) return result
   }
-  
+
   return handler(event, context)
 }
 

@@ -1,9 +1,12 @@
-const fs = require('fs')
+import fs from 'fs'
 
-const dotenv = require('dotenv')
+import dotenv from 'dotenv'
+
 const env = dotenv.parse(fs.readFileSync('.env'))
 
 const functions = [
+  'HealthFunction',
+  'ChatFunction',
 ]
 
 const output = functions.reduce((acc, fn) => {
