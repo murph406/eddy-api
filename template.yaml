@@ -38,6 +38,7 @@ Globals:
         RECAPTCHA_ENABLED: !Ref RecaptchaEnabled
         RECAPTCHA_SECRET: !Ref RecaptchaSecret
         OLLAMA_URL: !Ref OllamaUrl
+        OLLAMA_API_KEY: !Sub /eddy/${Stage}/ollama-api-key
 
 Resources:
   LambdaExecutionRole:
