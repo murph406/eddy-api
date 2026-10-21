@@ -138,5 +138,5 @@ Resources:
           Type: Api
           Properties:
             Path: /api/v1/chat
-            Method: GET
+            Method: POST
             RestApiId: !Ref EddyApi
