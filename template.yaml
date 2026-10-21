@@ -38,11 +38,28 @@ Globals:
         RECAPTCHA_ENABLED: !Ref RecaptchaEnabled
         RECAPTCHA_SECRET: !Ref RecaptchaSecret
         OLLAMA_URL: !Ref OllamaUrl
-        OLLAMA_API_KEY: !Sub /eddy/${Stage}/ollama-api-key
+        OLLAMA_API_KEY_PARAM: !Sub /eddy/${Stage}/ollama-api-key
 
 Resources:
+  ReadEddyParametersPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Lets the API Lambdas read secrets from Parameter Store
+    Properties:
+      ManagedPolicyName: !Sub '${Project}-${Stage}-read-parameters'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: ssm:GetParameter
+            Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/eddy/${Stage}/*
+
   LambdaExecutionRole:
     Type: AWS::IAM::Role
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Execution role for the API Lambdas.
     Properties:
       RoleName: !Sub '${Project}-${Stage}-api-role'
       AssumeRolePolicyDocument:
@@ -54,15 +71,24 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - !Ref ReadEddyParametersPolicy
 
   HealthFunctionLogGroup:
     Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Logs for the health function.
     Properties:
       LogGroupName: !Sub '/aws/lambda/${Project}-${Stage}-HealthFunction'
       RetentionInDays: 14
 
   EddyApi:
     Type: AWS::Serverless::Api
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Public REST API for the Eddy mobile app.
     Properties:
       Name: !Sub '${Project}-${Stage}-api'
       StageName: !Ref Stage
@@ -77,6 +103,8 @@ Resources:
         Minify: false
         EntryPoints:
           - src/controllers/health/index.ts
+      com.aws.cloudformation.Context:
+        why: Health check endpoint for the API.
     Properties:
       Role: !GetAtt LambdaExecutionRole.Arn
       FunctionName: !Sub '${Project}-${Stage}-HealthFunction'
@@ -99,6 +127,8 @@ Resources:
         Minify: false
         EntryPoints:
           - src/controllers/chat/index.ts
+        com.aws.cloudformation.Context:
+          why: Eddy chat endpoint. Calls the self-hosted Ollama model through the auth proxy.
     Properties:
       Role: !GetAtt LambdaExecutionRole.Arn
       FunctionName: !Sub '${Project}-${Stage}-ChatFunction'
