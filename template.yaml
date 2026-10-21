@@ -127,8 +127,8 @@ Resources:
         Minify: false
         EntryPoints:
           - src/controllers/chat/index.ts
-        com.aws.cloudformation.Context:
-          why: Eddy chat endpoint. Calls the self-hosted Ollama model through the auth proxy.
+      com.aws.cloudformation.Context:
+        why: Eddy chat endpoint. Calls the self-hosted Ollama model through the auth proxy.
     Properties:
       Role: !GetAtt LambdaExecutionRole.Arn
       FunctionName: !Sub '${Project}-${Stage}-ChatFunction'
