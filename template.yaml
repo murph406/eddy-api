@@ -73,17 +73,6 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         - !Ref ReadEddyParametersPolicy
 
-  HealthFunctionLogGroup:
-    Type: AWS::Logs::LogGroup
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
-    Metadata:
-      com.aws.cloudformation.Context:
-        why: Logs for the health function.
-    Properties:
-      LogGroupName: !Sub '/aws/lambda/${Project}-${Stage}-HealthFunction'
-      RetentionInDays: 14
-
   EddyApi:
     Type: AWS::Serverless::Api
     Metadata:
@@ -116,6 +105,17 @@ Resources:
             Path: /api/v1
             Method: GET
             RestApiId: !Ref EddyApi
+  
+  HealthFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Logs for the health function.
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Project}-${Stage}-HealthFunction'
+      RetentionInDays: 14
 
   ChatFunction:
     Type: AWS::Serverless::Function
@@ -140,6 +140,17 @@ Resources:
             Path: /api/v1/chat
             Method: POST
             RestApiId: !Ref EddyApi
+  
+  ChatFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Logs for the health function.
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Project}-${Stage}-ChatFunction'
+      RetentionInDays: 14
 
   ConditionsFunction:
     Type: AWS::Serverless::Function
@@ -164,3 +175,14 @@ Resources:
             Path: /api/v1/conditions
             Method: POST
             RestApiId: !Ref EddyApi
+            
+  ConditionsFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Logs for the health function.
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Project}-${Stage}-ConditionsFunction'
+      RetentionInDays: 14
