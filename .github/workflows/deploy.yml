@@ -58,7 +58,15 @@ jobs:
           BasicAuthSecret: ${{ secrets.BASIC_AUTH_SECRET }}
           RecaptchaEnabled: ${{ vars.RECAPTCHA_ENABLED }}
           RecaptchaSecret: ${{ secrets.RECAPTCHA_SECRET }}
-          OllamaUrl: ${{ vars.OLLAMA_URL }}
+          OllamaUrl: ${{ secrets.OLLAMA_URL }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          PRIVATE_SUBNET_A: ${{ secrets.PRIVATE_SUBNET_A }}
+          PRIVATE_SUBNET_B: ${{ secrets.PRIVATE_SUBNET_B }}
+          LAMBDA_SECURITY_GROUP: ${{ secrets.LAMBDA_SECURITY_GROUP }}
           
       - name: SAM Build
         run: sam build
@@ -77,6 +85,14 @@ jobs:
           RecaptchaEnabled: ${{ vars.RECAPTCHA_ENABLED }}
           RecaptchaSecret: ${{ secrets.RECAPTCHA_SECRET }}
           OllamaUrl: ${{ secrets.OLLAMA_URL }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          PRIVATE_SUBNET_A: ${{ secrets.PRIVATE_SUBNET_A }}
+          PRIVATE_SUBNET_B: ${{ secrets.PRIVATE_SUBNET_B }}
+          LAMBDA_SECURITY_GROUP: ${{ secrets.LAMBDA_SECURITY_GROUP }}
 
       - name: Build docs
         run: npm run docs:build
