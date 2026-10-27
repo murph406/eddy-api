@@ -7,6 +7,8 @@ const env = dotenv.parse(fs.readFileSync('.env'))
 const functions = [
   'HealthFunction',
   'ChatFunction',
+  'ConditionsFunction',
+  'DatabaseFunction'
 ]
 
 const output = functions.reduce((acc, fn) => {

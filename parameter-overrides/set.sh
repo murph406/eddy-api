@@ -8,6 +8,14 @@ array=(
   RecaptchaEnabled
   RecaptchaSecret
   OllamaUrl
+  PrivateSubnetA
+  PrivateSubnetB
+  LambdaSecurityGroupId
+  DbHost
+  DbPort
+  DbName
+  DbUser
+  DbPassword
 )
 
 for i in "${array[@]}"
