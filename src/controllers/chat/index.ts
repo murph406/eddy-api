@@ -2,9 +2,9 @@ import type { APIGatewayProxyEvent } from 'aws-lambda'
 
 import PROMPT from './prompt'
 import { ChatRequest, OllamaChatResponse } from './types'
-import { use } from '../../middleware'
-import { ok, serverError } from '../../utils/response'
-import { getOllamaApiKey } from '../../utils/secrets'
+import { use } from '@/middleware'
+import { ok, serverError } from '@/utils/response'
+import { getOllamaApiKey } from '@/utils/secrets'
 
 const OLLAMA_URL = process.env.OLLAMA_URL
 if (!OLLAMA_URL) throw new Error('OLLAMA_URL is not set')

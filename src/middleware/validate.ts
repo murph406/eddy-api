@@ -1,7 +1,8 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { ValidationError, type AnyObjectSchema } from 'yup'
 
-import { badRequest } from '../utils/response'
+import { badRequest } from '@/utils/response'
+
 
 const validate = (schema: AnyObjectSchema) => async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult | undefined> => {
   let body: unknown

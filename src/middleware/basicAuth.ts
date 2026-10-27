@@ -1,6 +1,7 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 
-import { unauthorized } from '../utils/response'
+import { unauthorized } from '@/utils/response'
+
 
 interface AuthBody {
   secret?: string

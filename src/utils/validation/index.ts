@@ -1,7 +1,7 @@
 import * as yup from 'yup'
 
 import errorCodes from './error-codes.json'
-import DOMAIN_BAN_LIST from '../../config/banned/domain.json'
+import DOMAIN_BAN_LIST from '@/config/banned/domain.json'
 
 declare module 'yup' {
     interface StringSchema {

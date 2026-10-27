@@ -1,7 +1,8 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import axios from 'axios'
 
-import { badRequest, forbidden } from '../utils/response'
+import { badRequest, forbidden } from '@/utils/response'
+
 
 interface RecaptchaBody {
     recaptchaToken?: string
