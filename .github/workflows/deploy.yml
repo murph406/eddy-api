@@ -2,7 +2,11 @@ name: Deploy
 
 on:
   push:
-    branches: [main, stage, develop]
+    branches: [
+      # main,
+      # stage,
+      # develop
+        ]
 
 env: 
   Project: ${{ vars.PROJECT }}
