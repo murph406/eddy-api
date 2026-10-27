@@ -77,6 +77,20 @@ Resources:
             Action: ssm:GetParameter
             Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/eddy/${Stage}/*
 
+  InvokeDatabaseFunctionPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Lets the API Lambdas invoke the VPC database function.
+    Properties:
+      ManagedPolicyName: !Sub '${Project}-${Stage}-invoke-database'
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: lambda:InvokeFunction
+            Resource: !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Project}-${Stage}-DatabaseFunction'
+
   LambdaExecutionRole:
     Type: AWS::IAM::Role
     Metadata:
@@ -93,7 +107,9 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
         - !Ref ReadEddyParametersPolicy
+        - !Ref InvokeDatabaseFunctionPolicy
 
   EddyApi:
     Type: AWS::Serverless::Api
