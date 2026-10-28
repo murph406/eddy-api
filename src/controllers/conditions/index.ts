@@ -1,33 +1,27 @@
-import { InvokeCommand, LambdaClient } from '@aws-sdk/client-lambda'
+import * as yup from 'yup'
 
+import database from '@/database/client'
 import { use } from '@/middleware'
-import { ok } from '@/utils/response'
-import { isLocal } from '@/utils/vars'
+import { ok, serverError } from '@/utils/response'
 
-const databaseFunctionName = isLocal
-    ? 'DatabaseFunction'
-    : `${process.env.PROJECT}-${process.env.STAGE}-DatabaseFunction`
 
-const lambda = new LambdaClient(
-    isLocal
-        ? { endpoint: 'http://host.docker.internal:3001' }
-        : {}
-)
+const pointSchema = yup.object({
+    type: yup.string().oneOf(['Point']).required(),
+    coordinates: yup.array().of(yup.number().required()).length(2).required(),
+})
 
-const handler = async () => {
-    const res = await lambda.send(
-        new InvokeCommand({
-            FunctionName: databaseFunctionName,
-            Payload: Buffer.from(JSON.stringify({})),
-        })
-    )
+const handler = async (event: { body?: string | null }) => {
+    try {
+        const point = await pointSchema.validate(event.body)
+        const [lng, lat] = point.coordinates
 
-    const raw = res.Payload?.transformToString() ?? '{}'
-    const result = JSON.parse(raw)
-    const { data } = JSON.parse(result.body)
+        const res = await database('findWater', { lng, lat })
+        return ok({ ...res })
+    } catch (error) {
+        console.log('ERROR::', error)
 
-    return ok({ message: data?.message })
+        return serverError()
+    }
 }
-
 
 exports.handler = use()(handler)
