@@ -20,7 +20,7 @@
       "id": "samFunction",
       "type": "pickString",
       "description": "Which function are you debugging?",
-      "options": ["ChatFunction", "HealthFunction"]
+      "options": ["ChatFunction", "HealthFunction", "ConditionsFunction"]
     }
   ], 
   "outFiles": ["${workspaceFolder}/.aws-sam/build/**/*.js"],
