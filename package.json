@@ -2,10 +2,12 @@
   "name": "eddy-api",
   "version": "1.0.0",
   "description": "",
+  "author": "",
+  "license": "ISC",
   "main": "index.js",
   "scripts": {
     "docs:build": "rm -rf docs/dist && mkdir -p docs/dist && cp docs/index.html openapi/openapi.yaml docs/dist/",
-    "docs:preview": "npm run docs:build && npx serve docs/dist",
+    "docs": "npm run docs:build && npx serve docs/dist",
     "lint:fix": "eslint src/ --fix",
     "lint": "eslint src/",
     "format": "prettier --write src/",
@@ -13,16 +15,16 @@
     "start": "nodemon --watch src --ext js,ts,json --exec 'npm run typecheck && node scripts/env-to-json.js && sam build && concurrently -k \"sam local start-api -p 8000 --host 0.0.0.0\" \"sam local start-lambda -p 3001 --host 0.0.0.0\"'",
     "debug": "npm run typecheck && node scripts/env-to-json.js && sam build --build-in-source && concurrently -k \"sam local start-api -p 8000 --host 0.0.0.0 -d 9229\" \"sam local start-lambda -p 3001 --host 0.0.0.0 -d 9230\""
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-cloudfront": "^3.1150.0",
     "@aws-sdk/client-lambda": "^3.1158.0",
     "@aws-sdk/client-s3": "^3.1150.0",
     "@aws-sdk/client-ssm": "^3.1154.0",
+    "ai": "^7.0.156",
     "axios": "^1.20.0",
     "pg": "^8.23.1",
-    "yup": "^1.7.1"
+    "yup": "^1.7.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.164",
