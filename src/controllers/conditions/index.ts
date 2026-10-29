@@ -4,7 +4,6 @@ import database from '@/database/client'
 import { use } from '@/middleware'
 import { ok, serverError } from '@/utils/response'
 
-
 const pointSchema = yup.object({
     type: yup.string().oneOf(['Point']).required(),
     coordinates: yup.array().of(yup.number().required()).length(2).required(),

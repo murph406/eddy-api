@@ -1,10 +1,10 @@
 import type { APIGatewayProxyEvent } from 'aws-lambda'
 
+import { CHAT_PROMPT } from '@/ai/prompts'
 import { use } from '@/middleware'
 import { ok, serverError } from '@/utils/response'
 import { getOllamaApiKey } from '@/utils/secrets'
 
-import PROMPT from './prompt'
 import { ChatRequest, OllamaChatResponse } from './types'
 
 const OLLAMA_URL = process.env.OLLAMA_URL
@@ -26,7 +26,7 @@ const handler = async (event: APIGatewayProxyEvent) => {
                 model: 'llama3.1:8b',
                 stream: false,
                 messages: [
-                    { role: 'system', content: PROMPT },
+                    { role: 'system', content: CHAT_PROMPT },
                     { role: 'user', content: `Message: ${message}` },
                 ],
             }),
